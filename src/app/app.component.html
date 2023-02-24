@@ -6,27 +6,30 @@
 <table class="table table-stripped">
   <thead>
     <tr>
-      <th>Project ID</th>
+    <th>Project ID</th>
     <th>Projects</th>
     <th>Client Name</th>
     <th>Start Date</th>
     <th>End Date</th>
     <th>Status</th>
+    <th *ngIf="Display_reason">Reason</th>
     </tr>
   </thead>
 <ng-container >
-  <tbody *ngFor="let entries of db_data;" >
+  <tbody *ngFor="let entry of db_data; let i=index" >
     <tr>
-      <td>{{entries.id}}</td>
-      <td>{{entries.title}}</td>
-      <td>{{entries.client_name}}</td>
-      <td>{{entries.start_date}}</td>
-      <td>{{entries.end_date}}</td>
-      <td>{{entries.status}}
-          <select (change)="onChange($event.target,entries)">
-            <option *ngFor="let status of db_status" [selected]="checkSelection(status.id,entries.status)"  [disabled]="checkDisabled(entries.status,status.id)" [value]="status.id" [attr.ids]="entries.project_id">{{status.value}}</option>
+      <td>{{entry.id}}</td>
+      <td>{{entry.title}}</td>
+      <td>{{entry.client_name}}</td>
+      <td>{{entry.start_date}}</td>
+      <td>{{entry.end_date}}</td>
+      <td>
+          <select (change)="onChange($event.target,entry,content,i)">
+            <option *ngFor="let status of db_status; " [selected]="checkSelection(status.id,entry.status)"  [disabled]="checkDisabled(entry.status,status.id)" [value]="status.id" [style.display]="status.id==entry.status?'none':'unset'">{{status.value}}</option>
           </select>
       </td>
+      <td *ngIf="['4','5','9'].includes(entry.status)?true:false;call" style="margin-left: 20%;">{{entry.reason}}</td>
+      <td #call></td>
     </tr>
 
   </tbody>
@@ -34,3 +37,23 @@
 
 </table>
 {{change|json}}
+
+<ng-template #content let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Reason</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<form>
+        <textarea placeholder="Please specify reason !......." class="form-control" [(ngModel)]="reason" name="message" #message="ngModel"></textarea>
+        <br>
+        <br>
+        <button type="submit" (click)="modal.close(200)" class="btn btn-outline-dark" [disabled]="reason==''?true:false">Submit</button>
+		</form>
+
+	</div>
+
+</ng-template>
+
+
+<hr />

@@ -5,11 +5,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HandlerService } from './handler.service';
 import { FormsModule, NgModel } from '@angular/forms';
+
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+
   ],
-  imports: [
+  imports: [NgbModule,
     BrowserModule,
     AppRoutingModule,HttpClientModule
   ,FormsModule],
